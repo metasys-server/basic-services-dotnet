@@ -17,7 +17,7 @@ namespace JohnsonControls.Metasys.BasicServices
     /// An HTTP client for consuming the most commonly used endpoints of the Metasys API.
     /// </summary>
     public class MetasysClient : BasicServiceProvider, IMetasysClient
-    {   
+    {
         /// <summary>The current session token.</summary>
         protected AccessToken AccessToken;
 
@@ -49,12 +49,12 @@ namespace JohnsonControls.Metasys.BasicServices
         /// <summary>
         /// Local instance of Trends service.
         /// </summary>
-        public  ITrendsService Trends { get; set; }
-		
+        public ITrendsService Trends { get; set; }
+
         /// <summary>
         /// Local instance of Alarms service.
         /// </summary>
-		public  IProvideAlarmInfo Alarms { get; set; }
+        public IProvideAlarmInfo Alarms { get; set; }
 
         /// <summary>
         /// Creates a new MetasysClient.
@@ -93,8 +93,8 @@ namespace JohnsonControls.Metasys.BasicServices
                     .AppendPathSegments("api", version));
             }
             // Init related services
-            Trends = new TrendsServiceProvider(Client);   
-			Alarms = new AlarmInfoProvider(Client);			
+            Trends = new TrendsServiceProvider(Client);
+            Alarms = new AlarmInfoProvider(Client);
         }
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace JohnsonControls.Metasys.BasicServices
             ObjectTypeEnumerations.Add(ObjectTypeEnumerations2);
         }
 
-    
+
 
         /// <summary>Use to log an error message from an asynchronous context.</summary>
         private async Task LogErrorAsync(String message)
@@ -481,7 +481,7 @@ namespace JohnsonControls.Metasys.BasicServices
                 }
             }
             return IdentifiersDictionary[normalizedItemReference];
-        }       
+        }
 
         /// <summary>
         /// Read one attribute value given the Guid of the object.
@@ -869,9 +869,9 @@ namespace JohnsonControls.Metasys.BasicServices
         /// <exception cref="MetasysHttpParsingException"></exception>
         public async Task<IEnumerable<MetasysObject>> GetNetworkDevicesAsync(string type = null)
         {
-            var response=await this.GetAllAvailablePagesAsync("networkDevices", new Dictionary<string, string>{ { "type", type }});
+            var response = await this.GetAllAvailablePagesAsync("networkDevices", new Dictionary<string, string> { { "type", type } });
             return toMetasysObject(response);
-        }      
+        }
 
 
         /// <summary>
@@ -970,7 +970,7 @@ namespace JohnsonControls.Metasys.BasicServices
             {
                 throw new MetasysObjectTypeException(typeToken.ToString(), e);
             }
-        }      
+        }
 
         /// <summary>
         /// Gets all child objects given a parent Guid.
@@ -986,8 +986,8 @@ namespace JohnsonControls.Metasys.BasicServices
         public IEnumerable<MetasysObject> GetObjects(Guid id, int levels = 1)
         {
             return GetObjectsAsync(id, levels).GetAwaiter().GetResult();
-        }       
-       
+        }
+
 
         /// <summary>
         /// Gets all spaces by requesting each available page.
@@ -1008,11 +1008,11 @@ namespace JohnsonControls.Metasys.BasicServices
         /// <exception cref="MetasysHttpParsingException"></exception>
         public async Task<IEnumerable<MetasysObject>> GetSpacesAsync(string type = null)
         {
-            var response=await GetAllAvailablePagesAsync("spaces", new Dictionary<string, string>() { {"type", type } });
+            var response = await GetAllAvailablePagesAsync("spaces", new Dictionary<string, string>() { { "type", type } });
             return toMetasysObject(response);
         }
 
-      
+
         /// <summary>
         /// Gets all equipment by requesting each available page.
         /// </summary>
@@ -1088,47 +1088,50 @@ namespace JohnsonControls.Metasys.BasicServices
         /// <param name="equipmentId"></param>
         /// <returns></returns>
         public async Task<IEnumerable<Point>> GetEquipmentPointsAsync(Guid equipmentId)
-        {            
-            List<Point> points = new List<Point>() { }; List<Guid> guids = new List<Guid>();                   
-            var response = await GetAllAvailablePagesAsync("equipment",  null, equipmentId.ToString(), "points").ConfigureAwait(false);              
+        {
+            List<Point> points = new List<Point>() { }; List<Guid> guids = new List<Guid>();
+            var response = await GetAllAvailablePagesAsync("equipment", null, equipmentId.ToString(), "points").ConfigureAwait(false);
             try
-            {                                                                            
-                    foreach (var item in response)
-                    {                                                                                                                                                  
-                            Point point = new Point(item);
-                            // Retrieve object Id from full URL and attribute to get the value
-                            string objectId = point.ObjectUrl.Split('/').Last();                             
-                            point.ObjectId = ParseObjectIdentifier(objectId);
-                            // Collect Guids to perform read property multiple in "one call"
-                            guids.Add(point.ObjectId);                                                                
-                            points.Add(point);                                                                       
-                    }                                                              
+            {
+                foreach (var item in response)
+                {
+                    Point point = new Point(item);
+                    // Retrieve object Id from full URL and attribute to get the value
+                    string objectId = point.ObjectUrl.Split('/').Last();
+                    point.ObjectId = ParseObjectIdentifier(objectId);
+                    if (point.ObjectId != Guid.Empty) // Sometime can happen that there are empty Guids.
+                    {
+                        // Collect Guids to perform read property multiple in "one call"
+                        guids.Add(point.ObjectId);
+                        points.Add(point);
+                    }
+                }
             }
             catch (System.NullReferenceException e)
             {
                 throw new MetasysHttpParsingException(response.ToString(), e);
-            }            
+            }
             // Try to Read Present Value when available. Note: can't read attribute ID from attribute full URL of point since we got only the description.
             var results = await ReadPropertyMultipleAsync(guids, new List<string> { "presentValue" });
             List<Point> pointsWithValues = new List<Point>() { };
             foreach (var r in results)
             {
-                var point=points.SingleOrDefault(s => s.ObjectId == r.Id);
+                var point = points.SingleOrDefault(s => s.ObjectId == r.Id);
                 // Assign present values back
                 point.PresentValue = r.Variants?.SingleOrDefault(s => s.Attribute == "presentValue");
                 // Need to do a new list since structs will be passed by value
                 pointsWithValues.Add(point);
-            }       
-            return pointsWithValues;          
+            }
+            return pointsWithValues;
         }
 
         /// <inheritdoc cref="GetObjects(Guid, int)"/>
         public async Task<IEnumerable<MetasysObject>> GetObjectsAsync(Guid id, int levels)
         {
-            var objects=await GetObjectChildrenAsync(id, null, levels);
+            var objects = await GetObjectChildrenAsync(id, null, levels);
             return toMetasysObject(objects);
-        }		                
-      
+        }
+
 
     }
 }

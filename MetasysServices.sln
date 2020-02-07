@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetasysServicesCom.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetasysServicesComExampleApp", "MetasysServicesComExampleApp\MetasysServicesComExampleApp.csproj", "{FB3F9759-AB14-40BC-808B-3FD12D441841}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherForecastApp", "..\WeatherForecastApp\WeatherForecastApp\WeatherForecastApp.csproj", "{EE268797-59DB-4BC3-961C-76B0C3912C0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,14 @@ Global
 		{FB3F9759-AB14-40BC-808B-3FD12D441841}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB3F9759-AB14-40BC-808B-3FD12D441841}.Release|x86.ActiveCfg = Release|Any CPU
 		{FB3F9759-AB14-40BC-808B-3FD12D441841}.Release|x86.Build.0 = Release|Any CPU
+		{EE268797-59DB-4BC3-961C-76B0C3912C0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE268797-59DB-4BC3-961C-76B0C3912C0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE268797-59DB-4BC3-961C-76B0C3912C0E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EE268797-59DB-4BC3-961C-76B0C3912C0E}.Debug|x86.Build.0 = Debug|Any CPU
+		{EE268797-59DB-4BC3-961C-76B0C3912C0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE268797-59DB-4BC3-961C-76B0C3912C0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE268797-59DB-4BC3-961C-76B0C3912C0E}.Release|x86.ActiveCfg = Release|Any CPU
+		{EE268797-59DB-4BC3-961C-76B0C3912C0E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

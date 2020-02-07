@@ -199,7 +199,7 @@ namespace JohnsonControls.Metasys.BasicServices
         /// <summary>
         /// Gets all points for the given equipment asynchronously.
         /// </summary>
-        Task<IEnumerable<Point>> GetEquipmentPointsAsync(Guid spaceId);   
+        Task<IEnumerable<Point>> GetEquipmentPointsAsync(Guid equipmentId);   
 
         /// <summary>
         /// Services for Trends and Samples.
