@@ -17,6 +17,8 @@ namespace JohnsonControls.Metasys.BasicServices
     {
         /// <summary>The http client.</summary>
         protected IFlurlClient Client;
+        private readonly ILog logger;
+        private ILogFactory logFactory;
 
         /// <summary>
         /// Empty constructor.
@@ -31,6 +33,7 @@ namespace JohnsonControls.Metasys.BasicServices
         public BasicServiceProvider(IFlurlClient client)
         {
             Client = client;
+            logger = logFactory.CreateLogger("MetasysService.Logging");
         }
 
         /// <summary>
@@ -181,28 +184,40 @@ namespace JohnsonControls.Metasys.BasicServices
         /// <exception cref="MetasysHttpNotFoundException"></exception>
         protected async Task<JToken> GetRequestAsync(string resource, Dictionary<string, string> parameters = null, params object[] pathSegments)
         {
-            // Create URL with base resource
-            Url url = new Url(resource);
-            // Concatenate segments with base resource url 
-            url.AppendPathSegments(pathSegments);
-            // Set query parameters according to the input dictionary
-            if (parameters != null)
-            {
-                foreach (var p in parameters)
-                {
-                    url.SetQueryParam(p.Key, p.Value);
-                }
-            }
+            logger.Info("Get request async for " + resource);
+
             JToken response = null;
+
             try
             {
-                response = await Client.Request(url)
-                .GetJsonAsync<JToken>()
-                .ConfigureAwait(false);
+                // Create URL with base resource
+                Url url = new Url(resource);
+                // Concatenate segments with base resource url 
+                url.AppendPathSegments(pathSegments);
+                // Set query parameters according to the input dictionary
+                if (parameters != null)
+                {
+                    foreach (var p in parameters)
+                    {
+                        url.SetQueryParam(p.Key, p.Value);
+                    }
+                }
+
+                try
+                {
+                    response = await Client.Request(url)
+                    .GetJsonAsync<JToken>()
+                    .ConfigureAwait(false);
+                }
+                catch (FlurlHttpException e)
+                {
+                    ThrowHttpException(e);
+                }
             }
-            catch (FlurlHttpException e)
+            catch (Exception exception)
             {
-                ThrowHttpException(e);
+                logger.Error("Error while fetching request " + resource, exception);
+                throw;
             }
             return response;
         }

@@ -54,7 +54,8 @@ namespace MetasysServicesExampleApp
             Console.WriteLine("4) Spaces and Equipment");
             Console.WriteLine("5) Alarms");
             Console.WriteLine("6) Trends");
-            Console.WriteLine("7) Exit");
+            Console.WriteLine("7) Audits");
+            Console.WriteLine("8) Exit");
             Console.Write("\r\nSelect an option: ");
 
             switch (Console.ReadLine())
@@ -78,6 +79,9 @@ namespace MetasysServicesExampleApp
                     new TrendsDemo(client).Run();
                     return true;
                 case "7":
+                    new AuditsDemo(client).Run();
+                    return true;
+                case "8":
                     return false;
                 default:
                     return true;

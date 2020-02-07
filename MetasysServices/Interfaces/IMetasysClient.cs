@@ -210,5 +210,10 @@ namespace JohnsonControls.Metasys.BasicServices
         /// Services for Alarms.
         /// </summary>
         IProvideAlarmInfo Alarms { get; set; }
+
+        /// <summary>
+        /// Services for Audits.
+        /// </summary>
+        IProvideAuditInfo Audits { get; set; }
     }
 }
