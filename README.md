@@ -25,6 +25,7 @@ For versioning information see the [changelog](CHANGELOG.md).
   - [Spaces and equipment](#spaces-and-equipment)
   - [Alarms](#alarms)
   - [Trends](#trends)
+  - [Audits](#audits)
 - [Usage (COM)](#usage-com)
   - [Creating a Client](#creating-a-client-1)
   - [Login and Access Tokens](#login-and-access-tokens-1)
@@ -36,6 +37,7 @@ For versioning information see the [changelog](CHANGELOG.md).
   - [Spaces and equipment](#spaces-and-equipment-1)
   - [Alarms](#alarms-1)
   - [Trends](#trends-1)
+  - [Audits](#audits-1)
 - [License](#license)
 - [Contributing](#contributing)
 - [Additional Information](#additional-information)
@@ -101,7 +103,7 @@ Finally, from the Developer Tab click the Visual Basic button to open the editor
 ## Usage (.NET)
 
 This section demonstrates how to use the MetasysClient to interact with your Metasys server from a .NET application.
-There is an example on [Github](https://github.com/metasys-server/basic-services-dotnet/tree/master/MetasysServicesExampleApp) that can be run from the command line.
+There is an example on [Github](https://github.com/metasys-server/basic-services-dotnet/tree/master/MetasysServicesExampleApp) that can be run from the command line and a specific prototype of an API to API integration about a  [Weather Forecast application](https://github.com/metasys-server/basic-services-dotnet/tree/master/WeatherForecastApp).
 
 ### Creating a Client
 
@@ -368,6 +370,32 @@ double value= firstSample.Value;
 ```
 Keep in mind that the object must be properly configured with trended attributes and samples are sent to the ADS/ADX. If you try to retrieve values from an object that has no valid trended attributes a MetasysHttpNotFoundException is raised.
 
+### Audits
+
+All services about audits are provided by Audits local instance of MetasysClient.
+To get all available audits use the GetAudits method. This method will return a PagedResult with a list of AuditItemProvider. This accepts an AuditFilter object to filter the response. To get a single audit use the GetSingleAudit method which returns an AuditItemProvider object with all the details given the Guid.
+
+```csharp
+AuditFilter auditFilter = new AuditFilter
+{
+    StartTime = new DateTime(2019, 12, 12).ToString(),
+    EndTime = new DateTime(2020, 1, 12).ToString(),
+    OriginApplications="0,1",
+    ActionTypes="1,2,4",
+};
+var audits = client.GetAudits(auditFilter);
+var auditId = audits.Items.ElementAt(0).Id;
+var audit = client.GetSingleAudit(auditId);
+var message= audit.Message;
+```
+To get the audits of a specific Object use the GetAuditsForAnObject method. The Guid of the parent object is required as input.
+
+```csharp
+AuditFilter auditFilter = new AuditFilter{};
+var objectId="17ac1932-18d8-518c-8012-420c77bea86b";
+var objectAudits = client.Audits.GetAuditsForAnObject(objectId, auditFilter);
+```
+
 ## Usage (COM)
 
 This section demonstrates how to use the LegacyMetasysClient to interact with your Metasys server from a VBA application.
@@ -588,6 +616,39 @@ pages=samplesPager.PageCount
 Dim SamplesCount as integer
 samplesCount=samplesPager.Total
 ```
+### Audits
+
+To get all available audits use the GetAudits method. This method will return a PagedResult with a list of AuditItemProvider. This accepts an AuditFilter object to filter the response. To get a single audit use the GetSingleAudit method which returns an AuditItemProvider object with all the details given the Guid.
+
+```vb
+'Prepare Alarm filter
+Dim filter As New ComAuditFilter
+filter.StartTime = "2020-01-10T08:10:20.243Z"
+filter.EndTime = "2020-01-10T09:10:20.243Z"
+filter.OriginApplications="1,2"
+filter.ActionTypes="0,1"
+Dim auditsPager As ComPagedResult
+Set auditsPager = client.GetAudits(objId, filter)
+'Iterate paged results
+Dim audit As ComProvideAuditItem
+Dim audits() As Object
+audits = auditsPager.Items
+Set audit = audits(0)
+Dim user as String
+user = audit.user
+'Read paging properties
+Dim pages as integer
+pages=auditsPager.PageCount
+```
+To get the audits of a specific Object use the GetAuditsForAnObject methods. The Guid of the parent object is required as input.
+
+```vb
+Set objectAuditsPager = client.GetAuditsForAnObject(objId, filter)
+Dim objectAudits() As Object
+ReDim objectAudits(objectAuditsPager.Items)
+objectAudits = objectAuditsPager.Items
+```
+
 ## License
 
 See [LICENSE](LICENSE).

@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.0] - 2020-02-13
+
+### Added
+
+- Dedicated Service Provider for Audits.
+- Get Audits method with filter object.
+- Get Single Audit by guid method.
+- Get Audits for a specific object method.
+
+### Fixed
+
+- Empty Guid check on Get Equipment points.
+
 ## [3.0.0] - 2020-01-30
 
 ### Added

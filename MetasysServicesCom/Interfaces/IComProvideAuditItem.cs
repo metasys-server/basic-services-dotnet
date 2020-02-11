@@ -41,17 +41,17 @@ namespace JohnsonControls.Metasys.ComServices
         /// <summary>
         /// Data value prior to the Audit.
         /// </summary>
-        dynamic PreData { get; set; }
+        object PreData { get; set; }
 
         /// <summary>
         /// Data value after the Audit.
         /// </summary>
-        dynamic PostData { get; set; }
+        object PostData { get; set; }
 
         /// <summary>
         /// Parameters for the Audit.
         /// </summary>
-        dynamic Parameters { get; set; }
+        object Parameters { get; set; }
 
         /// <summary>
         /// The error that may have occurred during an audit.
@@ -81,6 +81,6 @@ namespace JohnsonControls.Metasys.ComServices
         /// <summary>
         /// Metasys specific data.
         /// </summary>
-        dynamic Legacy { get; set; }
+        object Legacy { get; set; }
     }
 }
