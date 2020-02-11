@@ -6,7 +6,7 @@
     <RootNamespace>JohnsonControls.Metasys.BasicServices</RootNamespace>
     <LangVersion>7.3</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Copyright>Johnson Controls Inc. 2019</Copyright>
+    <Copyright>Johnson Controls Inc. 2020</Copyright>
     <Company>Johnson Controls Inc.</Company>
     <Product>Metasys Services</Product>
     <Authors>Johnson Controls</Authors>
@@ -14,11 +14,12 @@
     <PackageId>JohnsonControls.Metasys.BasicServices</PackageId>
     <PackageProjectUrl>https://github.com/metasys-server/basic-services-dotnet</PackageProjectUrl>
     <PackageTags>Johnson Controls, Metasys, API, .NET, Services</PackageTags>
-    <PackageReleaseNotes>-Dedicated Service Provider for Trends
--Get Trended Attributes method for a specific object
--Get Samples for a specific object given the attribute ID and the Time filter</PackageReleaseNotes>
+    <PackageReleaseNotes>- Dedicated Service Provider for Audits.
+- Get Audits method with filter object.
+- Get Single Audit by guid method.
+- Get Audits for a specific object method.</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>3.0.0</Version>
+    <Version>3.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -47,7 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="log4net" Version="1.2.10" />
+    <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Flurl" Version="2.8.2" />
     <PackageReference Include="Flurl.Http" Version="2.4.2" />

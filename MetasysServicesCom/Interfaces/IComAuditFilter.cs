@@ -46,6 +46,6 @@ namespace JohnsonControls.Metasys.ComServices
         /// Determines whether discarded audits will be excluded from results.
         /// Default is false (discarded audits will not be excluded).
         /// </summary>
-        bool? ExcludeDiscarded { get; set; }
+        bool ExcludeDiscarded { get; set; }
     }
 }

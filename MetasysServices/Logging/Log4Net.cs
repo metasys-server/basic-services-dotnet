@@ -24,7 +24,7 @@ namespace JohnsonControls.Metasys.BasicServices
         /// </param>
         public Log4NetLog(String source)
         {
-            log4Net = LogManager.GetLogger(source);
+            log4Net = LogManager.GetLogger(Type.GetType(source));
         }
 
         #region ILog Members

@@ -16,16 +16,17 @@
     <RootNamespace>JohnsonControls.Metasys.ComServices</RootNamespace>
     <LangVersion>7.3</LangVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Copyright>Johnson Controls Inc. 2019</Copyright>
+    <Copyright>Johnson Controls Inc. 2020</Copyright>
     <Company>Johnson Controls Inc.</Company>
     <Product>Metasys Services COM</Product>
     <Authors>Johnson Controls</Authors>
     <Description>Metasys Services Object Library</Description>
     <PackageId />
-    <Version>3.0.0</Version>
-    <PackageReleaseNotes>-Dedicated Service Provider for Trends
--Get Trended Attributes method for a specific object
--Get Samples for a specific object given the attribute ID and the Time filter</PackageReleaseNotes>    
+    <Version>3.1.0</Version>
+    <PackageReleaseNotes>- Dedicated Service Provider for Audits.
+- Get Audits method with filter object.
+- Get Single Audit by guid method.
+- Get Audits for a specific object method.</PackageReleaseNotes>    
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>none</DebugType>

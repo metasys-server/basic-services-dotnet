@@ -122,9 +122,8 @@ namespace JohnsonControls.Metasys.BasicServices
             if (CreationTime != null)
                 code = (code * 7) + CreationTime.GetHashCode();
             if (this.ActionTypeUrl != null)
-                code = (code * 7) + ActionTypeUrl.GetHashCode();
-            if (this.Discarded != null)
-                code = (code * 7) + Discarded.GetHashCode();
+                code = (code * 7) + ActionTypeUrl.GetHashCode();         
+            code = (code * 7) + Discarded.GetHashCode();
             if (this.StatusUrl != null)
                 code = (code * 7) + StatusUrl.GetHashCode();
             if (this.ErrorString != null)
