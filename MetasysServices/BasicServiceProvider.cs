@@ -33,7 +33,7 @@ namespace JohnsonControls.Metasys.BasicServices
         public BasicServiceProvider(IFlurlClient client)
         {
             Client = client;
-            logger = logFactory.CreateLogger("MetasysService.Logging");
+            //logger = logFactory.CreateLogger("MetasysService.Logging");
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace JohnsonControls.Metasys.BasicServices
         }
 
         /// <summary>
-        /// Generic request for the given resource asynchronously. 
+        /// Generic request for the given resource asynchronously.
         /// </summary>
         /// <param name="resource">The main resource to read.</param>
         /// <param name="parameters">Query string parameters in Key/Value format.</param>
@@ -184,7 +184,7 @@ namespace JohnsonControls.Metasys.BasicServices
         /// <exception cref="MetasysHttpNotFoundException"></exception>
         protected async Task<JToken> GetRequestAsync(string resource, Dictionary<string, string> parameters = null, params object[] pathSegments)
         {
-            logger.Info("Get request async for " + resource);
+           //logger.Info("Get request async for " + resource);
 
             JToken response = null;
 
@@ -216,7 +216,7 @@ namespace JohnsonControls.Metasys.BasicServices
             }
             catch (Exception exception)
             {
-                logger.Error("Error while fetching request " + resource, exception);
+              //logger.Error("Error while fetching request " + resource, exception);
                 throw;
             }
             return response;

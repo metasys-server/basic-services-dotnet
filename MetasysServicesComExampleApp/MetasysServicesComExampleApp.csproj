@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FeaturesDemo\IComAlarmsDemo.cs" />
+    <Compile Include="FeaturesDemo\IComAuditsDemo.cs" />
     <Compile Include="FeaturesDemo\IComGeneralDemo.cs" />
     <Compile Include="FeaturesDemo\IComGetObjectIdentifierDemo.cs" />
     <Compile Include="FeaturesDemo\IComRefreshTokenDemo.cs" />

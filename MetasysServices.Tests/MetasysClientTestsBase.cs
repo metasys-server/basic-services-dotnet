@@ -38,8 +38,6 @@ namespace MetasysServices.Tests
             EndTime = new DateTime(2020, 1, 21)
         };
 
-
-
         // Sample alarm response pasted from Postman response
         protected string Alarm = @"{
                 ""self"": ""https://hostname/api/v2/alarms/ddbd866f-687f-41ac-b484-aa52669e7381"",
@@ -101,7 +99,46 @@ namespace MetasysServices.Tests
             ""setUrl"": ""https://hostname/api/v2/enumSets/509""
         }";
 
-    [OneTimeSetUp]
+        /// <summary>
+        /// Default audit filter by one month.
+        /// </summary>
+        protected AuditFilter AuditFilter = new AuditFilter
+        {
+            StartTime = new DateTime(2019, 12, 20),
+            EndTime = new DateTime(2020, 1, 21)
+        };
+
+        // Sample audit response pasted from Postman response
+        protected string Audit = @"{
+                ""self"": ""https://hostname/api/v2/audits/1082c7f8-7e98-441d-8965-c5737e7cc752"",
+                ""id"": ""1082c7f8-7e98-441d-8965-c5737e7cc752"",
+                ""creationTime"": ""2020-02-07T06:38:46.25Z"",
+                ""actionTypeUrl"": ""https://hostname/api/v2/enumsets/577/members/5"",
+                ""discarded"": false,
+                ""statusUrl"": null,
+                ""preData"": null,
+                ""postData"": {
+                    ""unitUrl"": null,
+                    ""precisionUrl"": null,
+                    ""value"": ""::1"",
+                    ""typeUrl"": ""https://hostname/api/v2/enumsets/501/members/7""
+                },
+                ""parameters"": [],
+                ""errorString"": null,
+                ""user"": ""MetasysSysAgent"",
+                ""signature"": null,
+                ""annotationsUrl"": ""https://hostname/api/v2/audits/1082c7f8-7e98-441d-8965-c5737e7cc752/annotations"",
+                ""legacy"": {
+                    ""fullyQualifiedItemReference"": ""Win2016-VM2:Win2016-VM2"",
+                    ""itemName"": ""Win2016-VM2"",
+                    ""classLevelUrl"": ""https://hostname/api/v2/enumsets/568/members/1"",
+                    ""originApplicationUrl"": ""https://hostname/api/v2/enumsets/578/members/6"",
+                    ""descriptionUrl"": ""https://hostname/api/v2/enumsets/580/members/41""
+                },
+                ""objectUrl"": ""https://hostname/api/v2/objects/28bed6b0-4a0f-5bb0-a16f-57a7200685bb""
+            }";
+
+        [OneTimeSetUp]
         public void Init()
         {
             client = new MetasysClient("hostname", false, ApiVersion.v2, testCulture);

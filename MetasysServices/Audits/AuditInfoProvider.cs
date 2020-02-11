@@ -35,20 +35,19 @@ namespace JohnsonControls.Metasys.BasicServices
         }
 
         /// <inheritdoc/>
-        public async Task<PagedResult<AuditItemProvider>> GetAuditsAsync(AuditFilter auditFilter)
-        {                
-            return await GetPagedResultsAsync<AuditItemProvider>(BaseParam, ToDictionary(auditFilter));
-        }
-
-        /// <inheritdoc/>
         public async Task<AuditItemProvider> GetSingleAuditAsync(Guid auditId)
         {
-            var response=await GetRequestAsync("audits", null, auditId);
+            var response = await GetRequestAsync("audits", null, auditId);
             return JsonConvert.DeserializeObject<AuditItemProvider>(response.ToString());
         }
 
         /// <inheritdoc/>
+        public async Task<PagedResult<AuditItemProvider>> GetAuditsAsync(AuditFilter auditFilter)
+        {
+            return await GetPagedResultsAsync<AuditItemProvider>("audits", ToDictionary(auditFilter));
+        }
 
+        /// <inheritdoc/>
         public async Task<PagedResult<AuditItemProvider>> GetAuditsForAnObjectAsync(Guid objectId, AuditFilter auditFilter)
         {
             return await GetPagedResultsAsync<AuditItemProvider>("objects", ToDictionary(auditFilter), objectId, BaseParam);

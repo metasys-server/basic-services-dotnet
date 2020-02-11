@@ -53,7 +53,7 @@ namespace MetasysServicesComExampleApp.FeaturesDemo
             ComTimeFilter timeFilter = new ComTimeFilter
             {
                 StartTime = args[0],
-                EndTime = args[1],
+                EndTime = args[1]
             };
             return timeFilter;
         }

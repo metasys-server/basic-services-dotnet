@@ -62,6 +62,11 @@ namespace JohnsonControls.Metasys.ComServices
                 cfg.CreateMap<PagedResult<Sample>, IComPagedResult>()
                     // This is needed in order to correctly map to generic object reference to array, in order to correctly map to VBA
                     .ForMember(dest => dest.Items, opt => opt.MapFrom(src => Mapper.Map<IComSample[]>(src.Items)));
+                cfg.CreateMap<IComAuditFilter, AuditFilter>();
+                cfg.CreateMap<AuditItemProvider, IComProvideAuditItem>();
+                cfg.CreateMap<PagedResult<AuditItemProvider>, IComPagedResult>()
+                    // This is needed in order to correctly map to generic object reference to array, in order to correctly map to VBA
+                    .ForMember(dest => dest.Items, opt => opt.MapFrom(src => Mapper.Map<IComProvideAuditItem[]>(src.Items)));
             }).CreateMapper();
         }
 
@@ -365,6 +370,44 @@ namespace JohnsonControls.Metasys.ComServices
             PagedResult<Sample> samples = Client.Trends.GetSamples(new Guid(objectId), attributeId, mapTrendedAttributes);
             var map = Mapper.Map<IComPagedResult>(samples);
             return map;
+        }
+
+        /// <summary>
+        /// Retrieves the specified audit.
+        /// </summary>
+        /// <param name="auditId">The identifier of the audit.</param>
+        /// <returns>The specified audit details.</returns>
+        public object GetSingleAudit(string auditId)
+        {
+            Guid guidAuditId = Guid.Parse(auditId);
+            var auditItem = Client.Audits.GetSingleAudit(guidAuditId);
+            return Mapper.Map<IComProvideAuditItem>(auditItem);
+        }
+
+        /// <summary>
+        /// Retrieves a collection of audits.
+        /// </summary>
+        /// <param name="auditFilter">The audit model to filter audits.</param>
+        /// <returns>The list of audits with details.</returns>
+        public IComPagedResult GetAudits(IComAuditFilter auditFilter)
+        {
+            var mapAuditFilter = Mapper.Map<AuditFilter>(auditFilter);
+            PagedResult<AuditItemProvider> auditItems = Client.Audits.GetAudits(mapAuditFilter);
+            return Mapper.Map<IComPagedResult>(auditItems);
+        }
+
+        /// <summary>
+        /// Retrieves a collection of audits for the specified object.
+        /// </summary>
+        /// <param name="objectId">The identifier of the object.</param>
+        /// <param name="auditFilter">The filter to be applied to audit list.</param>
+        /// <returns>The list of audit with details.</returns>
+        public IComPagedResult GetAuditsForAnObject(string objectId, IComAuditFilter auditFilter)
+        {
+            Guid guidObjectId = Guid.Parse(objectId);
+            var mapAuditFilterForAnObject = Mapper.Map<AuditFilter>(auditFilter);
+            var auditItems = Client.Audits.GetAuditsForAnObject(guidObjectId, mapAuditFilterForAnObject);
+            return Mapper.Map<IComPagedResult>(auditItems);
         }
     }
 }
