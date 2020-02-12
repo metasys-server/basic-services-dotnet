@@ -33,12 +33,12 @@ namespace JohnsonControls.Metasys.BasicServices
         /// <summary>
         /// Earliest start time ISO8601 
         /// </summary>
-        DateTime StartTime { get; set; }
+        DateTime? StartTime { get; set; }
 
         /// <summary>
         /// Latest end time ISO8601
         /// </summary>
-        DateTime EndTime { get; set; }
+        DateTime? EndTime { get; set; }
 
         /// <summary>
         /// Determines whether discarded audits will be excluded from results.

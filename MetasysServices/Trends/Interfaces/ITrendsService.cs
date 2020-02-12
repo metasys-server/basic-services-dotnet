@@ -29,6 +29,7 @@ namespace JohnsonControls.Metasys.BasicServices
         /// <summary>
         /// Retrieves available samples for the given object attribute, filtered by startTime and endTime.
         /// </summary>
+        /// <remarks>StartTime and EndTime are mandatory parameters.</remarks>
         /// <param name="objectId"></param>
         /// <param name="attributeId"></param>
         /// <param name="filter"></param>
