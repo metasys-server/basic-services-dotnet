@@ -45,17 +45,17 @@ namespace JohnsonControls.Metasys.BasicServices
         /// <summary>
         /// Data value prior to the Audit.
         /// </summary>
-        public dynamic PreData { get; set; }
+        public DataModel PreData { get; set; }
 
         /// <summary>
         /// Data value after the Audit.
         /// </summary>
-        public dynamic PostData { get; set; }
+        public DataModel PostData { get; set; }
 
         /// <summary>
         /// Parameters for the Audit.
         /// </summary>
-        public dynamic Parameters { get; set; }
+        public DataModel Parameters { get; set; }
 
         /// <summary>
         /// The error that may have occurred during an audit.
@@ -70,7 +70,7 @@ namespace JohnsonControls.Metasys.BasicServices
         /// <summary>
         /// The user who created this audit
         /// </summary>
-        public dynamic Signature { get; set; }
+        public SignatureModel Signature { get; set; }
 
         /// <summary>
         /// A link to the object on which the activity was generated.
@@ -86,7 +86,7 @@ namespace JohnsonControls.Metasys.BasicServices
         /// <summary>
         /// Metasys specific data.
         /// </summary>
-        public dynamic Legacy { get; set; }
+        public LegacyModel Legacy { get; set; }
 
         /// <summary>
         /// URI that points back to this resource
@@ -106,9 +106,11 @@ namespace JohnsonControls.Metasys.BasicServices
                 // Compare each properties one by one for better performance
                 return this.Id == o.Id && this.CreationTime == o.CreationTime && this.ActionTypeUrl == o.ActionTypeUrl
                                   && this.Discarded == o.Discarded && this.StatusUrl == o.StatusUrl
-                                  && this.ErrorString == o.ErrorString && this.User == o.User
+                                  && this.PreData == o.PreData && this.PostData == o.PostData
+                                  && this.Parameters == o.Parameters && this.ErrorString == o.ErrorString
+                                  && this.User == o.User && this.Signature == o.Signature
                                   && this.ObjectUrl == o.ObjectUrl && this.AnnotationsUrl == o.AnnotationsUrl
-                                  && this.Self == o.Self;
+                                  && this.Legacy == o.Legacy && this.Self == o.Self;
             }
             return false;
         }
@@ -126,14 +128,24 @@ namespace JohnsonControls.Metasys.BasicServices
             code = (code * 7) + Discarded.GetHashCode();
             if (this.StatusUrl != null)
                 code = (code * 7) + StatusUrl.GetHashCode();
+            if (this.PreData != null)
+                code = (code * 7) + PreData.GetHashCode();
+            if (this.PostData != null)
+                code = (code * 7) + PostData.GetHashCode();
+            if (this.Parameters != null)
+                code = (code * 7) + Parameters.GetHashCode();
             if (this.ErrorString != null)
                 code = (code * 7) + ErrorString.GetHashCode();
             if (this.User != null)
                 code = (code * 7) + User.GetHashCode();
+            if (this.Signature != null)
+                code = (code * 7) + Signature.GetHashCode();
             if (this.ObjectUrl != null)
                 code = (code * 7) + ObjectUrl.GetHashCode();
             if (this.AnnotationsUrl != null)
                 code = (code * 7) + AnnotationsUrl.GetHashCode();
+            if (this.Legacy != null)
+                code = (code * 7) + Legacy.GetHashCode();
             if (this.Self != null)
                 code = (code * 7) + Self.GetHashCode();
             return code;

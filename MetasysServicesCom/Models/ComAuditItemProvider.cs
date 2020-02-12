@@ -41,17 +41,17 @@ namespace JohnsonControls.Metasys.ComServices
         /// <summary>
         /// Data value prior to the Audit.
         /// </summary>
-        public dynamic PreData { get; set; }
+        public ComDataModel PreData { get; set; }
 
         /// <summary>
         /// Data value after the Audit.
         /// </summary>
-        public dynamic PostData { get; set; }
+        public ComDataModel PostData { get; set; }
 
         /// <summary>
         /// Parameters for the Audit.
         /// </summary>
-        public dynamic Parameters { get; set; }
+        public ComDataModel Parameters { get; set; }
 
         /// <summary>
         /// The error that may have occurred during an audit.
@@ -66,7 +66,7 @@ namespace JohnsonControls.Metasys.ComServices
         /// <summary>
         /// The user who created this audit
         /// </summary>
-        public dynamic Signature { get; set; }
+        public ComSignatureModel Signature { get; set; }
 
         /// <summary>
         /// A link to the object on which the activity was generated.
@@ -81,7 +81,7 @@ namespace JohnsonControls.Metasys.ComServices
         /// <summary>
         /// Metasys specific data.
         /// </summary>
-        public dynamic Legacy { get; set; }
+        public ComLegacyModel Legacy { get; set; }
 
         /// <summary>
         /// URI that points back to this resource
