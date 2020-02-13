@@ -16,88 +16,92 @@ namespace MetasysServicesExampleApp.FeaturesDemo
         public void Run()
         {
             #region Alarms
+            try {
+                Console.WriteLine("Enter alarm id to get alarm details: ");
+                string stringAlarmId = Console.ReadLine();
+                Guid alarmId = Guid.Parse(stringAlarmId);
 
-            Console.WriteLine("Enter alarm id to get alarm details: ");
-            string stringAlarmId = Console.ReadLine();
-            Guid alarmId = Guid.Parse(stringAlarmId);
+                AlarmItemProvider alarmItem = client.Alarms.GetSingleAlarm(alarmId);
 
-            AlarmItemProvider alarmItem = client.Alarms.GetSingleAlarm(alarmId);
+                Console.WriteLine(string.Format("\n Alarm details found for {0}", alarmId));
+                Console.WriteLine($"\n Id: {alarmItem.Id}, Name: {alarmItem.Name}, ItemReference: {alarmItem.ItemReference}");
 
-            Console.WriteLine(string.Format("\n Alarm details found for {0}", alarmId));
-            Console.WriteLine($"\n Id: {alarmItem.Id}, Name: {alarmItem.Name}, ItemReference: {alarmItem.ItemReference}");
+                string getAlarms;
+                AlarmFilter getAlarmsFilter = new AlarmFilter();
 
-            string getAlarms;
-            AlarmFilter getAlarmsFilter = new AlarmFilter();
-
-            Console.WriteLine("Please enter these parameters separated by space: Start Time, End Time, Priority range, Type, Exclude pending, Exclude acknowledged, Exclude discarded, Attribute, Category, Page, Page Size, Sort" +
-                "\nRefer to the metasys-server/basic-services-dotnet README if you need help getting started.");
-            getAlarms = Console.ReadLine();
-            string[] args;
-            args = getAlarms.Split(' ');
-
-            if (args != null)
-            {
-                getAlarmsFilter = ReadUserInput(args);
-            }
-
-            Console.WriteLine("\n List of alarms with details");
-
-            var alarmItems = client.Alarms.GetAlarms(getAlarmsFilter);
-
-            Console.WriteLine($"\n Total: {alarmItems.Total}");
-            Console.WriteLine($"\n Page Count: {alarmItems.PageCount}");
-            Console.WriteLine($"\n Page Size: {alarmItems.PageSize}");
-            Console.WriteLine($"\n Current Page: {alarmItems.CurrentPage}");
-
-            foreach (var item in alarmItems.Items)
-            {
-                Console.WriteLine($"\n Id: {item.Id}, Name: {item.Name}, ItemReference: {item.ItemReference}");
-            }
-
-            Console.WriteLine("\nEnter object id to get alarm details: ");
-            string objectId = Console.ReadLine();
-
-            string getAlarmsForObject;
-            AlarmFilter alarmFilterForObject = new AlarmFilter();
-
-            Console.WriteLine("\n Please enter these parameters separated by space: Start Time, End Time, Priority range, Type, Exclude pending, Exclude acknowledged, Exclude discarded, Attribute, Category, Page, Page Size, Sort" +
+                Console.WriteLine("Please enter these parameters separated by space: Start Time, End Time, Priority range, Type, Exclude pending, Exclude acknowledged, Exclude discarded, Attribute, Category, Page, Page Size, Sort" +
                     "\nRefer to the metasys-server/basic-services-dotnet README if you need help getting started.");
+                getAlarms = Console.ReadLine();
+                string[] args;
+                args = getAlarms.Split(' ');
 
-            getAlarmsForObject = Console.ReadLine();
-            args = getAlarmsForObject.Split(' ');
+                if (args != null)
+                {
+                    getAlarmsFilter = ReadUserInput(args);
+                }
 
-            if (args != null)
-            {
-                alarmFilterForObject = ReadUserInput(args);
-            }
+                Console.WriteLine("\n List of alarms with details");
 
-            Console.WriteLine(string.Format("\nAlarm details found for this object {0}", objectId));
+                var alarmItems = client.Alarms.GetAlarms(getAlarmsFilter);
 
-            var alarmItemsForObject = client.Alarms.GetAlarmsForAnObject(Guid.Parse(objectId), alarmFilterForObject);
+                Console.WriteLine($"\n Total: {alarmItems.Total}");
+                Console.WriteLine($"\n Page Count: {alarmItems.PageCount}");
+                Console.WriteLine($"\n Page Size: {alarmItems.PageSize}");
+                Console.WriteLine($"\n Current Page: {alarmItems.CurrentPage}");
 
-            Console.WriteLine("\nEnter network device id to get alarm details: ");
-            string networkDeviceId = Console.ReadLine();
+                foreach (var item in alarmItems.Items)
+                {
+                    Console.WriteLine($"\n Id: {item.Id}, Name: {item.Name}, ItemReference: {item.ItemReference}");
+                }
 
-            string getAlarmsForNetworkDevice;
-            AlarmFilter alarmFilterModelForNetworkDevice = new AlarmFilter();
+                Console.WriteLine("\nEnter object id to get alarm details: ");
+                string objectId = Console.ReadLine();
 
-            Console.WriteLine("\nPlease enter these parameters separated by space: Start Time, End Time, Priority range, Type, Exclude pending, Exclude acknowledged, Exclude discarded, Attribute, Category, Page, Page Size, Sort" +
-                "\nRefer to the metasys-server/basic-services-dotnet README if you need help getting started.");
+                string getAlarmsForObject;
+                AlarmFilter alarmFilterForObject = new AlarmFilter();
 
-            getAlarmsForNetworkDevice = Console.ReadLine();
-            args = getAlarmsForNetworkDevice.Split(' ');
+                Console.WriteLine("\n Please enter these parameters separated by space: Start Time, End Time, Priority range, Type, Exclude pending, Exclude acknowledged, Exclude discarded, Attribute, Category, Page, Page Size, Sort" +
+                        "\nRefer to the metasys-server/basic-services-dotnet README if you need help getting started.");
 
-            if (args == null || args.Length != 12)
-            {
-                alarmFilterModelForNetworkDevice = ReadUserInput(args);
+                getAlarmsForObject = Console.ReadLine();
+                args = getAlarmsForObject.Split(' ');
+
+                if (args != null)
+                {
+                    alarmFilterForObject = ReadUserInput(args);
+                }
 
                 Console.WriteLine(string.Format("\nAlarm details found for this object {0}", objectId));
 
-                var alarmItemsForNetworkDevice = client.Alarms.GetAlarmsForNetworkDevice(Guid.Parse(networkDeviceId), alarmFilterModelForNetworkDevice);
+                var alarmItemsForObject = client.Alarms.GetAlarmsForAnObject(Guid.Parse(objectId), alarmFilterForObject);
+
+                Console.WriteLine("\nEnter network device id to get alarm details: ");
+                string networkDeviceId = Console.ReadLine();
+
+                string getAlarmsForNetworkDevice;
+                AlarmFilter alarmFilterModelForNetworkDevice = new AlarmFilter();
+
+                Console.WriteLine("\nPlease enter these parameters separated by space: Start Time, End Time, Priority range, Type, Exclude pending, Exclude acknowledged, Exclude discarded, Attribute, Category, Page, Page Size, Sort" +
+                    "\nRefer to the metasys-server/basic-services-dotnet README if you need help getting started.");
+
+                getAlarmsForNetworkDevice = Console.ReadLine();
+                args = getAlarmsForNetworkDevice.Split(' ');
+
+                if (args == null || args.Length != 12)
+                {
+                    alarmFilterModelForNetworkDevice = ReadUserInput(args);
+
+                    Console.WriteLine(string.Format("\nAlarm details found for this object {0}", objectId));
+
+                    var alarmItemsForNetworkDevice = client.Alarms.GetAlarmsForNetworkDevice(Guid.Parse(networkDeviceId), alarmFilterModelForNetworkDevice);
+                }
+                else
+                {
+                    Console.WriteLine("\nInvalid Input");
+                }
             }
-            else
-            {
-                Console.WriteLine("\nInvalid Input");
+            catch (Exception) {
+                Console.WriteLine("\n \nAn Error occurred. Press Enter to return to Main Menu");
             }
             Console.ReadLine();
             #endregion

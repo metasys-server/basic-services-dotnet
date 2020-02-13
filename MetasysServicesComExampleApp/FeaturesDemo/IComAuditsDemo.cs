@@ -14,85 +14,90 @@ namespace MetasysServicesComExampleApp.FeaturesDemo
         }
         public void Run()
         {
-            #region Audits
+            try {
+                #region Audits
 
-            Console.WriteLine("Enter audit id to get audit details: ");
-            string inputAuditId = Console.ReadLine();
+                Console.WriteLine("Enter audit id to get audit details: ");
+                string inputAuditId = Console.ReadLine();
 
-            IComProvideAuditItem auditItem = (IComProvideAuditItem)legacyClient.GetSingleAudit(inputAuditId);
+                IComProvideAuditItem auditItem = (IComProvideAuditItem)legacyClient.GetSingleAudit(inputAuditId);
 
-            Console.WriteLine(string.Format("\n Audit details found for {0}", inputAuditId));
-            Console.WriteLine($"\n Id: {auditItem.Id}, User: {auditItem.User}, PreData: {auditItem.PreData}, PostDate: {auditItem.PostData}");
+                Console.WriteLine(string.Format("\n Audit details found for {0}", inputAuditId));
+                Console.WriteLine($"\n Id: {auditItem.Id}, User: {auditItem.User}, PreData: {auditItem.PreData}, PostDate: {auditItem.PostData}");
 
-            string auditFilterInputItem;
-            ComAuditFilter auditFilterItem = new ComAuditFilter();
+                string auditFilterInputItem;
+                ComAuditFilter auditFilterItem = new ComAuditFilter();
 
-            Console.WriteLine("Please enter these parameters separated by space: Start Time, End Time, Origin Applications," +
-                              "Class Levels, Action Type, Exclude discarded, Page, Page Size, Sort" +
-                              "\nRefer to the metasys-server/basic-services-dotnet README if you need help getting started.");
+                Console.WriteLine("Please enter these parameters separated by space: Start Time, End Time, Origin Applications," +
+                                  "Class Levels, Action Type, Exclude discarded, Page, Page Size, Sort" +
+                                  "\nRefer to the metasys-server/basic-services-dotnet README if you need help getting started.");
 
-            auditFilterInputItem = Console.ReadLine();
+                auditFilterInputItem = Console.ReadLine();
 
-            string[] args;
-            args = auditFilterInputItem.Split(' ');
+                string[] args;
+                args = auditFilterInputItem.Split(' ');
 
-            if (args != null)
-            {
-                auditFilterItem = ReadUserInput(args);
-            }
+                if (args != null)
+                {
+                    auditFilterItem = ReadUserInput(args);
+                }
 
-            Console.WriteLine("\n List of audits with details");
+                Console.WriteLine("\n List of audits with details");
 
-            IComPagedResult PagedResult = (IComPagedResult)legacyClient.GetAudits(auditFilterItem);
-            IComProvideAuditItem[] auditItems = (IComProvideAuditItem[])PagedResult.Items;
+                IComPagedResult PagedResult = (IComPagedResult)legacyClient.GetAudits(auditFilterItem);
+                IComProvideAuditItem[] auditItems = (IComProvideAuditItem[])PagedResult.Items;
 
-            Console.WriteLine($"\n Total: {PagedResult.Total}");
-            Console.WriteLine($"\n Page Count: {PagedResult.PageCount}");
-            Console.WriteLine($"\n Page Size: {PagedResult.PageSize}");
-            Console.WriteLine($"\n Current Page: {PagedResult.CurrentPage}");
+                Console.WriteLine($"\n Total: {PagedResult.Total}");
+                Console.WriteLine($"\n Page Count: {PagedResult.PageCount}");
+                Console.WriteLine($"\n Page Size: {PagedResult.PageSize}");
+                Console.WriteLine($"\n Current Page: {PagedResult.CurrentPage}");
 
-            if (auditItems != null)
-            {
-                foreach (var item in auditItems)
+                if (auditItems != null)
+                {
+                    foreach (var item in auditItems)
+                    {
+                        Console.WriteLine($"\n Id: {item.Id}, User: {item.User}, PreData: {item.PreData}, PostDate: {item.PostData}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No audit found.");
+                }
+
+                Console.WriteLine("\nEnter object id to get audit details: ");
+                string objectId = Console.ReadLine();
+
+                var auditsForObject = new ComAuditFilter();
+
+                Console.WriteLine("Please enter these parameters separated by space: Start Time, End Time, Origin Applications," +
+                                  "Class Levels, Action Type, Exclude discarded, Page, Page Size, Sort" +
+                                  "\nRefer to the metasys-server/basic-services-dotnet README if you need help getting started.");
+
+                auditFilterInputItem = Console.ReadLine();
+                args = auditFilterInputItem.Split(' ');
+
+                if (args != null)
+                {
+                    auditsForObject = ReadUserInput(args);
+                }
+
+                Console.WriteLine(string.Format("\nAudit details found for this object {0}", objectId));
+
+                IComPagedResult PagedResultAuditForObject = (IComPagedResult)legacyClient.GetAuditsForAnObject(objectId, auditsForObject);
+                IComProvideAuditItem[] auditItemsForObject = (IComProvideAuditItem[])PagedResultAuditForObject.Items;
+
+                Console.WriteLine($"\n Total: {PagedResultAuditForObject.Total}");
+                Console.WriteLine($"\n Page Count: {PagedResultAuditForObject.PageCount}");
+                Console.WriteLine($"\n Page Size: {PagedResultAuditForObject.PageSize}");
+                Console.WriteLine($"\n Current Page: {PagedResultAuditForObject.CurrentPage}");
+
+                foreach (var item in auditItemsForObject)
                 {
                     Console.WriteLine($"\n Id: {item.Id}, User: {item.User}, PreData: {item.PreData}, PostDate: {item.PostData}");
                 }
             }
-            else
-            {
-                Console.WriteLine("No audit found.");
-            }
-
-            Console.WriteLine("\nEnter object id to get audit details: ");
-            string objectId = Console.ReadLine();
-
-            var auditsForObject = new ComAuditFilter();
-
-            Console.WriteLine("Please enter these parameters separated by space: Start Time, End Time, Origin Applications," +
-                              "Class Levels, Action Type, Exclude discarded, Page, Page Size, Sort" +
-                              "\nRefer to the metasys-server/basic-services-dotnet README if you need help getting started.");
-
-            auditFilterInputItem = Console.ReadLine();
-            args = auditFilterInputItem.Split(' ');
-
-            if (args != null)
-            {
-                auditsForObject = ReadUserInput(args);
-            }
-
-            Console.WriteLine(string.Format("\nAudit details found for this object {0}", objectId));
-
-            IComPagedResult PagedResultAuditForObject = (IComPagedResult)legacyClient.GetAuditsForAnObject(objectId, auditsForObject);
-            IComProvideAuditItem[] auditItemsForObject = (IComProvideAuditItem[])PagedResultAuditForObject.Items;
-
-            Console.WriteLine($"\n Total: {PagedResultAuditForObject.Total}");
-            Console.WriteLine($"\n Page Count: {PagedResultAuditForObject.PageCount}");
-            Console.WriteLine($"\n Page Size: {PagedResultAuditForObject.PageSize}");
-            Console.WriteLine($"\n Current Page: {PagedResultAuditForObject.CurrentPage}");
-
-            foreach (var item in auditItemsForObject)
-            {
-                Console.WriteLine($"\n Id: {item.Id}, User: {item.User}, PreData: {item.PreData}, PostDate: {item.PostData}");
+            catch (Exception) {
+                Console.WriteLine("\n \nAn Error occurred. Press Enter to return to Main Menu");
             }
 
             Console.ReadLine();
@@ -108,13 +113,13 @@ namespace MetasysServicesComExampleApp.FeaturesDemo
             {
                 StartTime = startTime.ToString(),
                 EndTime = endTime.ToString(),
-                OriginApplications = args[2],
-                ClassLevels = args[3],
-                ActionTypes = args[4],
+                OriginApplications = args[2].ToLower() != "null" ? args[2] : "1,2",
+                ClassLevels = args[3].ToLower() != "null" ? args[3] : "1,2",
+                ActionTypes = args[4].ToLower() != "null" ? args[4] : "1,2",
                 ExcludeDiscarded = !string.IsNullOrEmpty(args[5]) ? Convert.ToBoolean(args[5]) : false,
-                Page = args[6],
-                PageSize = args[7],
-                Sort = args[8]
+                Page = args[6].ToLower() != "null" ? args[6] : "0",
+                PageSize = args[7].ToLower() != "null" ? args[7] : "0",
+                Sort = args[8].ToLower() != "null" ? args[8] : "creationTime"
             };
             return auditFilter;
         }

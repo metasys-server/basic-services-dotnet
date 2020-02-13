@@ -15,31 +15,37 @@ namespace MetasysServicesExampleApp.FeaturesDemo
         public void Run()
         {
             #region Trend
-            TimeFilter getDateTimeForTrend = new TimeFilter();
-            Console.WriteLine("\nIndicate the object you want to run this example code on.");
-            Console.Write("Enter the fully qualified reference of the object (Example: \"site:device/itemReference\"): ");
-            string object1 = Console.ReadLine();
-            Guid id1 = client.GetObjectIdentifier(object1);
-            Console.WriteLine($"{object1} id: {id1}");
-            Guid objId = id1;
-            var trendedAttributes = client.Trends.GetTrendedAttributes(objId);
-            Console.WriteLine(trendedAttributes[0].Description);
+            try {
+                TimeFilter getDateTimeForTrend = new TimeFilter();
+                Console.WriteLine("\nIndicate the object you want to run this example code on.");
+                Console.Write("Enter the fully qualified reference of the object (Example: \"site:device/itemReference\"): ");
+                string object1 = Console.ReadLine();
+                Guid id1 = client.GetObjectIdentifier(object1);
+                Console.WriteLine($"{object1} id: {id1}");
+                Guid objId = id1;
+                var trendedAttributes = client.Trends.GetTrendedAttributes(objId);
+                Console.WriteLine(trendedAttributes[0].Description);
 
-            Console.WriteLine("Please enter Start Date and End Date separated by space: ");
-            string getDateTime = Console.ReadLine();
-            string[] args;
-            args = getDateTime.Split(' ');
+                Console.WriteLine("Please enter Start Date and End Date separated by space: ");
+                string getDateTime = Console.ReadLine();
+                string[] args;
+                args = getDateTime.Split(' ');
 
-            if (args != null)
-            {
-                getDateTimeForTrend = ReadUserInputForTrends(args);
+                if (args != null)
+                {
+                    getDateTimeForTrend = ReadUserInputForTrends(args);
+                }
+
+                var samples = client.Trends.GetSamples(objId, 85, getDateTimeForTrend).Items;
+                foreach (var s in samples)
+                {
+                    Console.WriteLine($"Value: {s.Value} Unit: {s.Unit} Timestamp: {s.Timestamp}");
+                }
+            }
+            catch (Exception) {
+                Console.WriteLine("\n \nAn Error occurred. Press Enter to return to Main Menu");
             }
 
-            var samples = client.Trends.GetSamples(objId, 85, getDateTimeForTrend).Items;
-            foreach (var s in samples)
-            {
-                Console.WriteLine($"Value: {s.Value} Unit: {s.Unit} Timestamp: {s.Timestamp}");
-            }
             Console.ReadLine();
             #endregion
         }

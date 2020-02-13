@@ -15,10 +15,16 @@ namespace MetasysServicesExampleApp.FeaturesDemo
         }
         public void Run()
         {
-            #region Refresh           
-            Console.WriteLine("\nRefreshing Token...");
-            var token = client.Refresh();
-            Console.WriteLine($"Access token: {token.Token} expires {token.Expires}.");
+            #region Refresh
+            try {
+                Console.WriteLine("\nRefreshing Token...");
+                var token = client.Refresh();
+                Console.WriteLine($"Access token: {token.Token} expires {token.Expires}.");
+            }
+            catch (Exception) {
+                Console.WriteLine("\n \nAn Error occurred. Press Enter to return to Main Menu");
+            }
+
             Console.ReadLine();
             #endregion
         }       
